@@ -1,6 +1,6 @@
 ---
   # This playbook contains common plays that will be run on all nodes.
-  
+
   - name: Download MySQL Community Repo
     get_url:
       url: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
@@ -28,7 +28,7 @@
     shell: |
       password_match=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
       echo $password_match
-      mysql -uroot -p$password_match --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{{ upassword }}'; flush privileges; "
+      mysql -uroot -p$password_match --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Abc@123abc'; flush privileges; "
     ignore_errors: yes
     notify: restart mysql
   
@@ -73,7 +73,7 @@
       state: present
       regexp: "{{ mysql_port }}"
       insertafter: "^:OUTPUT "
-      line: "-A INPUT -p tcp  --dport {{ mysql_port }} -j  ACCEPT"
+      line: "-A INPUT -p tcp  --dport 3306 -j  ACCEPT"
     notify: restart iptables
   
   - name: Create Application Database
