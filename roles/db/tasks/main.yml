@@ -16,11 +16,6 @@
       name: "mysql-server"
       state: present
   
-  - name: Install MySQL-python, this is required for the task remove anonymous user
-    yum:
-      name: "MySQL-python"
-      state: present
-  
   - name: Start MySQL Server and enable it
     service: name=mysqld state=started enabled=yes
 
@@ -37,6 +32,7 @@
       name: "{{ item }}"
       state: installed
     with_items:
+     - MySQL-python
      - libselinux-python
      - libsemanage-python
   
@@ -47,12 +43,12 @@
       persistent: yes
     when: sestatus.rc != 0
   
-  - name: Create Mysql configuration file
-    template:
-      src: my.cnf.j2
-      dest: /etc/my.cnf
-    notify:
-    - restart mysql
+  # - name: Create Mysql configuration file
+  #   template:
+  #     src: my.cnf.j2
+  #     dest: /etc/my.cnf
+  #   notify:
+  #   - restart mysql
   
   - name: Create Mysql configuration file 2
     template:
@@ -85,7 +81,7 @@
   
   - name: Create Application DB User
     mysql_user:
-      name: "{{ dbuser }}"
+      name: "newUser"
       password: "{{ upassword }}"
       priv: "*.*:ALL"
       host: '%'

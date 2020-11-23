@@ -6,6 +6,9 @@
  </br>
   <a href=http://{{ ansible_default_ipv4.address }}/index.html>Homepage</a>
  </br>
+ </br>
+  <a href=http://{{ ansible_default_ipv4.address }}/about.html>About Us</a>
+ </br>
 <?php 
  Print "Hello, World! I am a web server configured using Ansible and I am : ";
  echo exec('hostname');
